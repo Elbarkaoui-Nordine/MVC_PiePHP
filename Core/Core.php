@@ -2,13 +2,18 @@
 
 namespace Core;
 use Core\Router;
-
+include_once('src/routes.php');
 class Core {
+
+    public function __construct()
+    {
+        
+    }
 
     public function run()
     {
         $URL = array_filter(explode('/',$_SERVER['REQUEST_URI'])); 
-        
+
         if(Router::get($_SERVER['REQUEST_URI']) != null){
             $router = Router::get($_SERVER['REQUEST_URI']);
             $class = 'Controller\\'.ucfirst($router['controller']).'Controller';
