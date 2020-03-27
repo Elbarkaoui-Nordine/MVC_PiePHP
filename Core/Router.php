@@ -1,6 +1,5 @@
 <?php
-
-
+namespace Core;
 class Router
 {
     private static $routes ;
@@ -11,13 +10,9 @@ class Router
     
     public static function get ( $url )
     {
-        if(array_key_exists($url,self::$routes))
-        {
-            return self::$routes[$url];     
-        }
+        return array_key_exists($url,self::$routes)  ?   self::$routes[$url] :  null;  
         // retourne un tableau associatif contenant
         // - le controller a instancier
         // - la methode du controller a appeler
-
     }
 }

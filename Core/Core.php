@@ -1,18 +1,20 @@
 <?php
 
 namespace Core;
-require_once ( implode ( DIRECTORY_SEPARATOR , [ 'Core' , 'autoload.php']) ) ;
+use Core\Router;
+
 class Core {
 
-    public function run ()
-    {
-        echo __CLASS__ . " [ OK ]" . PHP_EOL ;
-    }
-    
-    public function getURL()
+    public function run()
     {
         $URL = array_filter(explode('/',$_SERVER['REQUEST_URI'])); 
-        if(count($URL) == 3){
+        
+        if(Router::get($_SERVER['REQUEST_URI']) != null){
+            $router = Router::get($_SERVER['REQUEST_URI']);
+            $class = 'Controller\\'.ucfirst($router['controller']).'Controller';
+            $method = $router['action'].'Action';
+        }
+        else if(count($URL) == 3){
             $method = array_reverse($URL)[0].'Action';
             $class = 'Controller\\'.ucfirst(array_reverse($URL)[1]).'Controller';
         }

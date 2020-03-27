@@ -10,4 +10,8 @@ class AppController{
     public function indexAction(){
         echo 'The index function has been called';
     }
+    
+    public function weshAction(){
+        echo 'wesh alors';
+    }
 }
