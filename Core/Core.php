@@ -2,20 +2,20 @@
 
 namespace Core;
 use Core\Router;
-include_once('src/routes.php');
 class Core {
-
+    
     public function __construct()
     {
-        
+        include_once('src/routes.php');
     }
 
     public function run()
     {
         $URL = array_filter(explode('/',$_SERVER['REQUEST_URI'])); 
-
-        if(Router::get($_SERVER['REQUEST_URI']) != null){
-            $router = Router::get($_SERVER['REQUEST_URI']);
+        $URLRoute = str_replace('/MVC_PiePHP','',$_SERVER['REQUEST_URI']);
+    
+        if(Router::get($URLRoute) != null){
+            $router = Router::get($URLRoute);
             $class = 'Controller\\'.ucfirst($router['controller']).'Controller';
             $method = $router['action'].'Action';
         }

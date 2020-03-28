@@ -1,3 +1,3 @@
 <?php
 
-Core\Router::connect($_SERVER['REQUEST_URI'],['controller' => 'app' , 'action' => 'wesh']);
+Core\Router::connect('/app/',['controller' => 'app' , 'action' => 'wesh']);
