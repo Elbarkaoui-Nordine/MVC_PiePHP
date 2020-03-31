@@ -2,9 +2,10 @@
 
 namespace Controller;
 
-class AppController{
+// Faire un lien qui menne a une methode qui render la page login et qui verifie
+class AppController extends \Core\Controller{
     public function addAction(){
-        echo 'The add function has been called';
+        echo $this->render('index');
     }
 
     public function indexAction(){
@@ -14,4 +15,4 @@ class AppController{
     public function weshAction(){
         echo 'wesh alors';
     }
-}
+} 

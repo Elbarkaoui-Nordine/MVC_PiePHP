@@ -2,15 +2,17 @@
 
 namespace Core;
 use Core\Router;
+
 class Core {
     
-    public function __construct()
+    function __construct()
     {
         include_once('src/routes.php');
     }
 
     public function run()
     {
+       
         $URL = array_filter(explode('/',$_SERVER['REQUEST_URI'])); 
         $URLRoute = str_replace('/MVC_PiePHP','',$_SERVER['REQUEST_URI']);
     
@@ -32,7 +34,7 @@ class Core {
             $class = 'Controller\\AppController';
             $method = 'indexAction';
         }
-
+        
         if(class_exists($class)){
             $int = new $class();
             if(method_exists($class,$method)){
@@ -46,6 +48,7 @@ class Core {
         {
             echo 'error 404';
         }
+        
         
     }
 }   

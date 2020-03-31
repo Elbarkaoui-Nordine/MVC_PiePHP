@@ -3,7 +3,6 @@ spl_autoload_register('newAutoLoader');
 
 function newAutoLoader($class)
 {
-  echo $class.'<br>';
     $namespace = explode('\\',$class)[0];
   
     $class = explode('\\',$class)[1];

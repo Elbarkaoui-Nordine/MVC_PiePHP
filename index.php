@@ -3,4 +3,4 @@ define ( 'BASE_URI' , str_replace ( '\ ' , '/' , substr ( __DIR__ , strlen ( $_S
 require_once ( implode ( DIRECTORY_SEPARATOR , [ 'Core' , 'autoload.php']) ) ;
 
 $a = new Core\Core();
-$a->run();   
+$a->run();
