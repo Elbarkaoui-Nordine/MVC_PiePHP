@@ -36,12 +36,12 @@ class UserController extends \Core\Controller{
             else
             {
                 echo 'mauvais identifiant';
-                echo $this->render('login');
+                $this->render('login');
             }
         }
         else
         {
-            echo $this->render('login');
+            $this->render('login');
         }
     }
 }

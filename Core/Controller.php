@@ -30,8 +30,13 @@ class Controller
             ob_start();
             //va mettre dans le view
             include(implode(DIRECTORY_SEPARATOR, [dirname(__DIR__), 'src', 'View', 'index']) . '.php');
-            return self::$_render = ob_get_clean();
+            self::$_render = ob_get_clean();
         }
+    }
+
+    function __destruct()
+    {
+        echo self::$_render;
     }
 }
 
