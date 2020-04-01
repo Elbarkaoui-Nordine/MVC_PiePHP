@@ -5,7 +5,7 @@ namespace Controller;
 class UserController extends \Core\Controller{
     
     public function indexAction(){
-        echo $this->render('login');
+        echo 'User index here';
     }
     
     public function registerAction()
@@ -19,18 +19,29 @@ class UserController extends \Core\Controller{
 
     public function logAction()
     {
-        if(isset($_POST['email']) && isset($_POST['password']))
+        session_start();
+        if(isset($_SESSION['id']))
+        {
+            echo 'bien connecter a la session '.$_SESSION['id'];
+        }
+        else if(isset($_POST['email']) && isset($_POST['password']))
         {
             $model = new \Model\UserModel($_POST['email'],$_POST['password']);
             if($model->logAction($_POST['email'],$_POST['password']))
             {
-                echo 'bien connecter';
+                
+                $_SESSION['id'] = $model->getID();
+                echo 'bien connecter a la session '.$_SESSION['id'];
             }
             else
             {
-                echo 'pas connecter';
+                echo 'mauvais identifiant';
                 echo $this->render('login');
             }
+        }
+        else
+        {
+            echo $this->render('login');
         }
     }
 }

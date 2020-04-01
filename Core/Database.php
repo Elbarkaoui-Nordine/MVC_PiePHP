@@ -3,12 +3,7 @@ namespace Core;
 
 class Database {
 
-    public function run ()
-    {
-        echo __CLASS__ . " [ OK ]" . PHP_EOL ;
-    }
-
-    public function connect(){
-       echo 'yo';
+    public static function connect(){
+        return new \PDO('mysql:host=127.0.0.1;dbname=MVC_PiePHP','root','');
     }
 }

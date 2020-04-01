@@ -9,7 +9,7 @@ class AppController extends \Core\Controller{
     }
 
     public function indexAction(){
-        echo 'The index function has been called';
+        echo 'The app index function has been called';
     }
     
     public function weshAction(){

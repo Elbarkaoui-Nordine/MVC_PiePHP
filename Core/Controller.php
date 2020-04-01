@@ -14,8 +14,7 @@ class Controller
 
     public function __construct()
     {
-        
-        $req = new \Core\Request();
+        $req = new Request();
         $req->secureAction();
     }
 
@@ -34,6 +33,5 @@ class Controller
             return self::$_render = ob_get_clean();
         }
     }
-    //ajouter la function render
 }
 

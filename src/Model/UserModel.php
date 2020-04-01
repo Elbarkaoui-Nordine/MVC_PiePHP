@@ -3,7 +3,7 @@
 namespace Model;
 
 
-class UserModel{
+class UserModel extends \Core\Entity{
     private $email;
     private $password;
     private $bdd;
@@ -39,4 +39,13 @@ class UserModel{
             return false;
         }
     }
+
+    public function getID(){
+        $req = $this->bdd->prepare("SELECT id FROM users where email = :email AND password = :password");
+        $req->bindParam(':email', $this->email);
+        $req->bindParam(':password', $this->password);
+        $req->execute();
+        return $req->fetchAll(\PDO::FETCH_ASSOC)[0]['id'];
+    }
 }
+
