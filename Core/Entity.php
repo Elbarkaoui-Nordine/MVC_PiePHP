@@ -1,7 +1,7 @@
 <?php
 
 namespace Core;
-require_once('./autoload.php');
+
 class Entity{
 
     function __construct($params)
