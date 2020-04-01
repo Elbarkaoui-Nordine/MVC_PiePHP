@@ -1,17 +1,18 @@
 <?php
 namespace Core;
-// require_once('./autoload.php');
+
+
 class ORM{
 
-    private static $bdd;
+    private $bdd;
 
-    public function  connect()
+    function __construct()
     {
-        self::$bdd = Database::connect();
+        $this->bdd = new \PDO('mysql:host=127.0.0.1;dbname=MVC_PiePHP','root','');
     }
 
     //  string $table $field['colums' => ['email'] , 'values' => ['nordine@hotmail.fr'] ]
-    public static function create($table, $fields){
+    public function create($table, $fields){
         $executeArray = [];
 
         $query = "INSERT INTO " . $table . "(";
@@ -30,21 +31,21 @@ class ORM{
         $query .= ")";
     
 
-        $req = self::$bdd->prepare($query);
+        $req = $this->bdd->prepare($query);
         $req->execute($executeArray);
-        return self::$bdd->lastInsertId();
+        return $this->bdd->lastInsertId();
     }
 
-    public static function read($table,$id){
+    public function read($table,$id){
         $query = "SELECT * FROM $table WHERE id = ?";
-        $req = self::$bdd->prepare($query);
+        $req = $this->bdd->prepare($query);
         $req->execute([$id]);
         $res = $req->fetchAll(\PDO::FETCH_ASSOC);
         return $res;
         
     }
 
-    public static function update($table,$id,$fields){
+    public function update($table,$id,$fields){
 
         $executeArray = [];
 
@@ -57,23 +58,23 @@ class ORM{
 
         $query .= "WHERE id = ?";
         $executeArray[] = $id;
-        $req = self::$bdd->prepare($query);
+        $req = $this->bdd->prepare($query);
         $req->execute($executeArray);
         $count = $req->rowCount();
         return $count > 0 ? true : false;
     }
 
 
-    public static function delete($table,$id){
+    public function delete($table,$id){
 
         $query = "DELETE FROM " . $table . " WHERE id = ?";
-        $req = self::$bdd->prepare($query);
+        $req = $this->bdd->prepare($query);
         $req->execute([$id]);
         $count = $req->rowCount();
         return $count > 0 ? true : false;
     }
 
-    public static function find($table,$condition = []){
+    public function find($table,$condition = []){
      
     //print_r($a->find(  'users',['WHERE' => ['id' => '1,2'] ,'ADD' => 'OR','ORDER BY' => 'id ASC','LIMIT' => '30']  ));
     $query = "SELECT * FROM $table ";
@@ -102,12 +103,10 @@ class ORM{
             $query .= ' LIMIT '.$condition['LIMIT'];
         }
     }
-    $req = self::$bdd->prepare($query);
+    $req = $this->bdd->prepare($query);
     $req->execute($executeArray);
     $res = $req->fetchAll(\PDO::FETCH_ASSOC);
     return $res;
     }
 }
 
-// ORM::connect();
-// print_r(ORM::read('users','2'));
