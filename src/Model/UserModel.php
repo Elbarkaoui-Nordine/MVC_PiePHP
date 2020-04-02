@@ -3,27 +3,20 @@
 namespace Model;
 
 class UserModel extends \Core\Entity{
-    private $email;
-    private $password;
-    private $bdd;
-
-
-
-    public function __construct($email,$password)
-    {
-
-        $this->bdd = new \PDO('mysql:host=127.0.0.1;dbname=MVC_PiePHP','root','');
-        $this->email = $email;
-        $this->password = $password;
-    }
 
     public function save()
     {
+        $this->create();
+    }
 
-        $req = $this->bdd->prepare("INSERT INTO users (email,password) VALUES(:email,:password)");
-        $req->bindParam(':email', $this->email);
-        $req->bindParam(':password', $this->password);
-        $req->execute();
+    public function mailExist(){
+        if($this->find(['WHERE' => ['email' => $this->email]])){
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public function logAction()

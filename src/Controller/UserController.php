@@ -8,7 +8,7 @@ class UserController extends \Core\Controller{
         echo 'User index here';
     }
 
-    public function signup(){
+    public function signupAction(){
         $this->render('register');
     }
     
@@ -16,8 +16,16 @@ class UserController extends \Core\Controller{
     {
         if(isset($_POST['email']) && isset($_POST['password']))
         {
-            $model = new \Model\UserModel($_POST['email'],$_POST['password']);
-            $model->save($_POST['email'],$_POST['password']);
+            $params = $this->request->getQueryParams();
+            $model = new \Model\UserModel($params);
+            if(!$model->mailExist()){
+                $model->save();
+                self::$_render = 'Votre compte a ete cree';
+            }
+            else{
+                echo 'Cette adresse email est deja prise.';
+                $this->render('register');
+            }
         }
     }
 

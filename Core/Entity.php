@@ -6,7 +6,7 @@ namespace Core;
 // require_once("./autoload.php");
 
 class Entity{
-    
+
     function __construct($params)
     {
         $table = lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s");
@@ -21,7 +21,7 @@ class Entity{
         }
         else
         {//instancie avec params
-        
+
             foreach( $params as $key => $val)
             {
                 $this->$key = $val;
@@ -30,17 +30,31 @@ class Entity{
     }
 
     public function create(){
-
-        foreach(get_object_vars($this) as $key => $value){
-            $col[] = $key;
-            $val[] = $value;
-        }
-        ORM::create( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),['columns' => $col,'values' => $val]);
-       //$this->ORM->create([$this->table,['values']])
+        
+        return ORM::create( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this));
+       
+        // $this->ORM->create([$this->table,['values']])
     }
 
     public function delete(){
 
+        return ORM::delete( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id']);
+       
     }
 
+    public function find($param){
+
+       return ORM::find( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),$param);
+    }
+
+    public function read(){
+
+        return ORM::delete( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id']);
+       
+    }
+
+    public function update($param){
+
+        return ORM::update( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id'],$param);
+    }
 }       

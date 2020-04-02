@@ -11,11 +11,11 @@ class Controller
     proprement. Pensez à __construct qui est appelé à la création d’un objet.
     */
     public static $_render;
+    protected $request;
 
     public function __construct()
     {
-        $req = new Request();
-        $req->secureAction();
+        $this->request = new \Core\Request();
     }
 
     protected function render($view, $scope = [])

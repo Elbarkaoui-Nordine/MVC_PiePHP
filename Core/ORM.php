@@ -6,6 +6,10 @@ class ORM{
     //  string $table $field['colums' => ['email'] , 'values' => ['nordine@hotmail.fr'] ]
     public static function create($table, $fields){
         $bdd = Database::connect();
+        foreach($fields as $key => $val){
+            $fields['columns'][] = $key;
+            $fields['values'][] = $val;
+        }
         $executeArray = [];
 
         $query = "INSERT INTO " . $table . "(";
