@@ -3,7 +3,7 @@
 namespace Core;
 
 
-require_once("./autoload.php");
+// require_once("./autoload.php");
 
 class Entity{
     
@@ -16,9 +16,7 @@ class Entity{
             $info = ORM::read($table,$params['id'])[0];
             foreach( $info as $key => $val)
             {
-                $this->$key = $val;
-              
-                
+                $this->$key = $val; 
             }
         }
         else
@@ -37,9 +35,12 @@ class Entity{
             $col[] = $key;
             $val[] = $value;
         }
-
         ORM::create( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),['columns' => $col,'values' => $val]);
        //$this->ORM->create([$this->table,['values']])
+    }
+
+    public function delete(){
+
     }
 
 }       

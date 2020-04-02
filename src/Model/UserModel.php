@@ -50,5 +50,5 @@ class UserModel extends \Core\Entity{
         return $req->fetchAll(\PDO::FETCH_ASSOC)[0]['id'];
     }
 }
-$a = new UserModel('y','y');
-$a->create($tab = ['prenom' => 'nordine','nom' => 'elbarkaoui','age'=>'22 ans','sexe'=>'homme']);
+// $a = new UserModel('y','y');
+// $a->create($tab = ['prenom' => 'nordine','nom' => 'elbarkaoui','age'=>'22 ans','sexe'=>'homme']);

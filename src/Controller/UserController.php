@@ -7,6 +7,10 @@ class UserController extends \Core\Controller{
     public function indexAction(){
         echo 'User index here';
     }
+
+    public function signup(){
+        $this->render('register');
+    }
     
     public function registerAction()
     {
