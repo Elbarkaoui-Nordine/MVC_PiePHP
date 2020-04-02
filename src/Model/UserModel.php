@@ -2,14 +2,16 @@
 
 namespace Model;
 
-
 class UserModel extends \Core\Entity{
     private $email;
     private $password;
     private $bdd;
 
+
+
     public function __construct($email,$password)
     {
+
         $this->bdd = new \PDO('mysql:host=127.0.0.1;dbname=MVC_PiePHP','root','');
         $this->email = $email;
         $this->password = $password;
@@ -48,4 +50,5 @@ class UserModel extends \Core\Entity{
         return $req->fetchAll(\PDO::FETCH_ASSOC)[0]['id'];
     }
 }
-
+$a = new UserModel('y','y');
+$a->create($tab = ['prenom' => 'nordine','nom' => 'elbarkaoui','age'=>'22 ans','sexe'=>'homme']);
