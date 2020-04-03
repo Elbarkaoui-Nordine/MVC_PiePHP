@@ -11,6 +11,11 @@ class UserController extends \Core\Controller{
     public function signupAction(){
         $this->render('register');
     }
+
+    public function show($id)
+    {
+        echo " ID de l ' utilisateur a afficher : $id " . PHP_EOL ;
+    }
     
     public function registerAction()
     {
@@ -38,10 +43,9 @@ class UserController extends \Core\Controller{
         }
         else if(isset($_POST['email']) && isset($_POST['password']))
         {
-            $model = new \Model\UserModel($_POST['email'],$_POST['password']);
-            if($model->logAction($_POST['email'],$_POST['password']))
+            $model = new \Model\UserModel($_POST);
+            if($model->accountExist())
             {
-                
                 $_SESSION['id'] = $model->getID();
                 echo 'bien connecter a la session '.$_SESSION['id'];
             }
