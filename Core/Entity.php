@@ -42,7 +42,7 @@ class Entity{
        
     }
 
-    public function find($param){
+    public function find($param = []){
 
        return ORM::find( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),$param);
     }

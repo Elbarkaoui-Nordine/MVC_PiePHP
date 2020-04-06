@@ -37,7 +37,7 @@ class Core {
         if(class_exists($class)){
             $int = new $class();
             if(method_exists($class,$method)){
-                $int->$method();
+                if(isset(Router::$id)){$int->$method(Router::$id);}else{$int->$method();}
             }
             else{
                 echo 'error 404';

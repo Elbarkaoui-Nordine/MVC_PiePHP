@@ -103,7 +103,7 @@ class ORM{
         }
     }
     $req = $bdd->prepare($query);
-    $req->execute($executeArray);
+    !empty($executeArray) ? $req->execute($executeArray) : $req->execute();
     $res = $req->fetchAll(\PDO::FETCH_ASSOC);
     return $res;
     }
