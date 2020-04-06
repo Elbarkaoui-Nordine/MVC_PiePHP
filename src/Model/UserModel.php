@@ -4,6 +4,11 @@ namespace Model;
 
 class UserModel extends \Core\Entity{
 
+    public $relation = [
+        'has_many' => ['table' => 'article' , 'key' => 'user_id']
+        ,'has_one' => ['table' => 'promo' , 'key' => 'user_id']
+    ];
+
     public function save()
     {
         $this->create();
@@ -14,7 +19,7 @@ class UserModel extends \Core\Entity{
     }
 
     public function mailExist(){
-        if($this->find(['WHERE' => ['email' => $this->email]])){
+        if($this->find(['WHERE' => ['email' => $this->param['email']]])){
             return true;
         }
         else

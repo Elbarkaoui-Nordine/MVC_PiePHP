@@ -12,7 +12,7 @@ class Router
     public static function get ( $url )
     {
         $expURL = explode('/',$url);
-        if(intval($expURL[count($expURL)-1]) && !preg_match("/[a-z]/i", $expURL[count($expURL)-1])){
+        if(intval($expURL[count($expURL)-1]) && !preg_match("/[a-z]/i", $expURL[count($expURL)-1]) && count($expURL) == 3){
             self::$id = preg_replace('/[^0-9]/', '', $expURL[count($expURL)-1]);
             $expURL[count($expURL)-1] = '{id}';
             $url = implode('/',$expURL);

@@ -12,9 +12,16 @@ class UserController extends \Core\Controller{
         $this->render('register');
     }
 
+
     public function showAction($id)
     {
         echo " ID de l ' utilisateur a afficher : $id " . PHP_EOL ;
+    }
+    public function snkAction(){
+        $model = new \Model\UserModel(['id' => '1']);
+        echo '<pre>';
+        print_r($model);
+        echo '</pre>';
     }
 
     public function readAllAction(){
