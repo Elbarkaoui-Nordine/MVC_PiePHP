@@ -5,9 +5,9 @@ namespace Model;
 class UserModel extends \Core\Entity{
 
     public $relation = [
-        'has_many' => ['table' => 'article' , 'key' => 'user_id']
-        ,'has_one' => ['table' => 'promo' , 'key' => 'user_id']
-    ];
+        'has_many' => ['table' => 'article' , 'key' => 'user_id'],
+        'has_one' => ['table' => 'promo' , 'key' => 'promo_id']
+         ];
 
     public function save()
     {
