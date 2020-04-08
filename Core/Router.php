@@ -17,6 +17,10 @@ class Router
             $expURL[count($expURL)-1] = '{id}';
             $url = implode('/',$expURL);
         }
+        else if(count($expURL) == 3 &&  $expURL[count($expURL)-1] == '?'){
+            $expURL[count($expURL)-1] = 'erreur';
+            $url = implode('/',$expURL);
+        }
 
         if(!empty(self::$routes)){
             return array_key_exists($url,self::$routes)  ?   self::$routes[$url] :  null;  

@@ -6,7 +6,7 @@ class UserModel extends \Core\Entity{
 
     public $relation = [
         'has_many' => ['table' => 'article' , 'key' => 'user_id'],
-        'has_one' => ['table' => 'promo' , 'key' => 'promo_id']
+        'has_one' => ['table' => 'voiture' , 'key' => 'voiture_id']
          ];
 
     public function save()

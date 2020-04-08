@@ -2,24 +2,21 @@
 
 namespace Core;
 
-
-
 class Entity{
-
-
 
     function __construct($params)
     {
         $table = lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s");
         
-
         if(key_exists('id',$params))
         {//instancie avec Read de l'ORM
-            $info = ORM::read($table,$params['id'])[0];
-            foreach( $info as $key => $val)
-            {
-                $this->$key = $val;
-                
+            $info = ORM::read($table,$params['id']) ? ORM::read($table,$params['id'])[0] : false;
+            if($info){
+
+                foreach( $info as $key => $val)
+                {
+                    $this->$key = $val;   
+                }
             }
         }
         else
@@ -34,11 +31,11 @@ class Entity{
         if(isset($this->relation) && key_exists('has_many',$this->relation) && isset($this->id)){
        
             $tabrel = $this->relation['has_many']['table'].'s';
+            $class = '\Model\\'.ucfirst($this->relation['has_many']['table']).'Model';
             $tab = ORM::find($this->relation['has_many']['table'].'s',['WHERE' => [$this->relation['has_many']['key'] => $this->id]]);
             foreach( $tab as $val)
             {
-                $this->$tabrel[] = new \Model\ArticleModel($val);
-                
+                $this->$tabrel[] = new $class($val);
             }
             if(isset($this->$tabrel)){
                 foreach($this->$tabrel as $value){
@@ -47,12 +44,15 @@ class Entity{
             }
         }
 
-        if(isset($this->relation) && key_exists('has_one',$this->relation) && isset($this->promo_id)){
+        if(isset($this->relation) && key_exists('has_one',$this->relation) && isset($this->id)){
             $tabrel = $this->relation['has_one']['table'].'s';
-            $tab = ORM::find($this->relation['has_one']['table'].'s',['WHERE' => [$this->relation['has_many']['key'] => $this->promo_id]]);
+            $class = '\Model\\'.ucfirst($this->relation['has_one']['table']).'Model';
+            $keyS = $this->relation['has_one']['key'];
+  
+            $tab = ORM::find($this->relation['has_one']['table'].'s',['WHERE' => ['id' => $this->$keyS]]);
             foreach( $tab as $key => $val)
             {
-                $this->$tabrel[] = new \Model\PromoModel($val);
+                $this->$tabrel[] = new $class($val);
             }
             if(isset($this->$tabrel)){
                 foreach($this->$tabrel as $value){
@@ -60,18 +60,8 @@ class Entity{
                 }
             }
         }
-        
     }
 
-    public function removeRel($arr){
-        $temp = [];
-        foreach($arr as $key => $value){
-            if($key != 'relation' ){
-                $temp[$key] = $value; 
-            }
-        }
-        return $temp;
-    }
 
     public function create(){
         return ORM::create( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),$this->param);

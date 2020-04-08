@@ -15,7 +15,10 @@ class UserController extends \Core\Controller{
 
     public function showAction($id)
     {
-        echo " ID de l ' utilisateur a afficher : $id " . PHP_EOL ;
+        $model = new \Model\UserModel(['id' => $id]);
+        echo '<pre>';
+        print_r($model);
+        echo '</pre>';
     }
     public function snkAction(){
         $model = new \Model\UserModel(['id' => '1']);
@@ -55,6 +58,9 @@ class UserController extends \Core\Controller{
         }
     }
 
+    public function erreurAction(){
+        echo 'Vous avez mis un point d\'interogation';
+    }
     public function logAction()
     {
         session_start();
