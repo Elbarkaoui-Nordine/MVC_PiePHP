@@ -5,10 +5,11 @@ namespace Model;
 class UserModel extends \Core\Entity{
 
     public $relation = [
-        'has_many' => ['table' => 'article' , 'key' => 'user_id'],
-        'has_one' => ['table' => 'voiture' , 'key' => 'voiture_id']
+        'has_many' => [ ['table' => 'article' , 'key' => 'user_id'] ],
+        'has_one' => [ ['table' => 'voiture' , 'key' => 'voiture_id'] ],
+        'many_to_many' => [ ['table1' => 'user' , 'table2' => 'item'] ],
          ];
-
+//on connais la table pivot car il faut concatener les deux table ? 
     public function save()
     {
         $this->create();

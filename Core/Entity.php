@@ -30,33 +30,74 @@ class Entity{
         
         if(isset($this->relation) && key_exists('has_many',$this->relation) && isset($this->id)){
        
-            $tabrel = $this->relation['has_many']['table'].'s';
-            $class = '\Model\\'.ucfirst($this->relation['has_many']['table']).'Model';
-            $tab = ORM::find($this->relation['has_many']['table'].'s',['WHERE' => [$this->relation['has_many']['key'] => $this->id]]);
-            foreach( $tab as $val)
-            {
-                $this->$tabrel[] = new $class($val);
-            }
-            if(isset($this->$tabrel)){
-                foreach($this->$tabrel as $value){
-                    unset($value->relation);
+            foreach($this->relation['has_many'] as $value){
+
+                if(is_array($value) && key_exists('table',$value)){
+
+                    $tabrel = $value['table'].'s';
+                    $class = '\Model\\'.ucfirst($value['table']).'Model';
+                    $tab = ORM::find($value['table'].'s',['WHERE' => [$value['key'] => $this->id]]);
+                    foreach( $tab as $val)
+                    {
+                        $this->$tabrel[] = new $class($val);
+                    }
+                    if(isset($this->$tabrel)){
+                        foreach($this->$tabrel as $value){
+                            unset($value->relation);
+                        }
+                    }
                 }
             }
         }
 
         if(isset($this->relation) && key_exists('has_one',$this->relation) && isset($this->id)){
-            $tabrel = $this->relation['has_one']['table'].'s';
-            $class = '\Model\\'.ucfirst($this->relation['has_one']['table']).'Model';
-            $keyS = $this->relation['has_one']['key'];
-  
-            $tab = ORM::find($this->relation['has_one']['table'].'s',['WHERE' => ['id' => $this->$keyS]]);
-            foreach( $tab as $key => $val)
-            {
-                $this->$tabrel[] = new $class($val);
+            
+
+            foreach($this->relation['has_one'] as $value){
+
+                if(is_array($value) && key_exists('table',$value)){
+
+                    $tabrel = $value['table'];
+                    $class = '\Model\\'.ucfirst($value['table']).'Model';
+                    $keyS = $value['key'];
+          
+                    $tab = ORM::find($value['table'].'s',['WHERE' => ['id' => $this->$keyS]]);
+                    foreach( $tab as $key => $val)
+                    {
+                        $this->$tabrel[] = new $class($val);
+                    }
+                    if(isset($this->$tabrel)){
+                        foreach($this->$tabrel as $value){
+                            unset($value->relation);
+                        }
+                    }
+                }
             }
-            if(isset($this->$tabrel)){
-                foreach($this->$tabrel as $value){
-                    unset($value->relation);
+        }
+
+        if(isset($this->relation) && key_exists('many_to_many',$this->relation) && isset($this->id)){
+            
+            foreach($this->relation['many_to_many'] as $value){
+
+                if(is_array($value) && key_exists('table1',$value)){
+
+                    $table1 = $value['table1'].'s';
+                    $table2 = $value['table2'].'s';
+                    $pivot = $table1.'_'.$table2;
+
+                    $class = '\Model\\'.ucfirst($value['table2']).'Model';
+            
+                    $tab = ORM::find($pivot,['WHERE' => [$value['table1'].'_id' => $this->id]]);
+  
+                    foreach( $tab as $val)
+                    {
+                        $this->$table2[] = new $class(['id' => $val[$value['table2'].'_id']]);
+                    }
+                    if(isset($this->$tabrel)){
+                        foreach($this->$tabrel as $value){
+                            unset($value->relation);
+                        }
+                    }
                 }
             }
         }
@@ -71,7 +112,7 @@ class Entity{
 
     public function delete(){
 
-        return ORM::delete( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),$this->removeRel(get_object_vars($this))['id']);
+        return ORM::delete( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id']);
        
     }
 
@@ -83,13 +124,13 @@ class Entity{
 
     public function read(){
 
-        return ORM::delete( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),$this->removeRel(get_object_vars($this))['id']);
+        return ORM::delete( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id']);
        
     }
 
     public function update($param){
 
-        return ORM::update( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),$this->removeRel(get_object_vars($this))['id'],$param);
+        return ORM::update( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id'],$param);
     }
 
 
