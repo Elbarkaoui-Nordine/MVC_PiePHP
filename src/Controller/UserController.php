@@ -13,6 +13,9 @@ class UserController extends \Core\Controller{
     }
 
 
+    public function testAction(){
+        $this->render('test');
+    }
     public function showAction($id)
     {
         $model = new \Model\UserModel(['id' => $id]);
