@@ -28,9 +28,9 @@ class Entity{
                 $this->$key = $val;
             }
         }
-        if(!isset($GLOBALS['counter'])){
-            
-
+        
+        if( !isset($GLOBALS['class']) ){
+             $GLOBALS['class'] = get_class($this);   
             if(isset($this->relation) && key_exists('has_many',$this->relation) && isset($this->id)){
         
                 foreach($this->relation['has_many'] as $value){
@@ -43,11 +43,6 @@ class Entity{
                         foreach( $tab as $val)
                         {
                             $this->$tabrel[] = new $class($val);
-                        }
-                        if(isset($this->$tabrel)){
-                            foreach($this->$tabrel as $value){
-                                unset($value->relation);
-                            }
                         }
                     }
                 }
@@ -63,22 +58,17 @@ class Entity{
                         $class = '\Model\\'.ucfirst($value['table']).'Model';
                         $keyS = $value['key'];
             
-                        $tab = ORM::find($value['table'].'s',['WHERE' => ['id' => $this->$keyS]]);
-                        foreach( $tab as $key => $val)
-                        {
-                            $this->$tabrel = new $class($val);
-                        }
-                        if(isset($this->$tabrel)){
-                            foreach($this->$tabrel as $value){
-                                unset($value->relation);
+                        if(isset($this->$keyS)){
+                            $tab = ORM::find($value['table'].'s',['WHERE' => ['id' => $this->$keyS]]);
+                            foreach( $tab as $key => $val)
+                            {
+                                $this->$tabrel = new $class($val);
                             }
                         }
                     }
                 }
             }
                 
-            
-
             if(isset($this->relation) && key_exists('many_to_many',$this->relation) && isset($this->id)){
                 foreach($this->relation['many_to_many'] as $value){
     
@@ -96,18 +86,20 @@ class Entity{
                         {
                             $this->$table2[] = new $class(['id' => $val[$value['table2'].'_id']]);
                         }
-                        if(isset($this->$tabrel)){
-                            foreach($this->$tabrel as $value){
-                                unset($value->relation);
-                            }
-                        }
                     }
                 }
             }
-
-            $GLOBALS['counter'] = true; 
+            
         }
         
+        foreach(get_object_vars($this) as $key => $value){
+            if(is_array($value)){
+                if($key == 'relation'){
+                    unset($this->$key);
+                }                
+            }
+        }
+       
     }
 
 

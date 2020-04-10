@@ -64,6 +64,7 @@ class UserController extends \Core\Controller{
     public function erreurAction(){
         echo 'Vous avez mis un point d\'interogation';
     }
+    
     public function logAction()
     {
         session_start();

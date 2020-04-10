@@ -39,6 +39,7 @@ class UserModel extends \Core\Entity{
         }
     }
 
+
     public function getID(){
         return $this->find(['WHERE' => ['email' => $this->email , 'password' => $this->password] , 'ADD' => 'AND'])[0]['id'];
     }
