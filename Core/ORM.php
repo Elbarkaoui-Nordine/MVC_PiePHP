@@ -27,7 +27,7 @@ class ORM{
         $query = substr($query, 0, -2);
         $query .= ")";
     
-
+   
         $req = $bdd->prepare($query);
         $req->execute($executeArray);
         return $bdd->lastInsertId();

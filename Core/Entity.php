@@ -4,8 +4,12 @@ namespace Core;
 
 class Entity{
 
-    function __construct($params)
+    function __construct($params, $class = null)
     {
+        if($class == null){
+            $class = get_class($this);
+        }
+        
         $table = lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s");
         
 
@@ -29,8 +33,8 @@ class Entity{
             }
         }
         
-        if( !isset($GLOBALS['class']) ){
-             $GLOBALS['class'] = get_class($this);   
+        if( $class == get_class($this)){
+         
             if(isset($this->relation) && key_exists('has_many',$this->relation) && isset($this->id)){
         
                 foreach($this->relation['has_many'] as $value){
@@ -42,7 +46,7 @@ class Entity{
                         $tab = ORM::find($value['table'].'s',['WHERE' => [$value['key'] => $this->id]]);
                         foreach( $tab as $val)
                         {
-                            $this->$tabrel[] = new $class($val);
+                            $this->$tabrel[] = new $class($val,$class);
                         }
                     }
                 }
@@ -62,7 +66,7 @@ class Entity{
                             $tab = ORM::find($value['table'].'s',['WHERE' => ['id' => $this->$keyS]]);
                             foreach( $tab as $key => $val)
                             {
-                                $this->$tabrel = new $class($val);
+                                $this->$tabrel = new $class($val,$class);
                             }
                         }
                     }
@@ -84,7 +88,7 @@ class Entity{
     
                         foreach( $tab as $val)
                         {
-                            $this->$table2[] = new $class(['id' => $val[$value['table2'].'_id']]);
+                            $this->$table2[] = new $class(['id' => $val[$value['table2'].'_id']],$class);
                         }
                     }
                 }
@@ -104,14 +108,17 @@ class Entity{
 
 
     public function create(){
-        return ORM::create( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),$this->param);
+
+        return ORM::create( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this));
        
         // $this->ORM->create([$this->table,['values']])
     }
 
     public function delete(){
 
-        return ORM::delete( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id']);
+        if(isset($this->id)){
+            return ORM::delete( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id']);
+        }
        
     }
 
@@ -130,6 +137,16 @@ class Entity{
     public function update($param){
 
         return ORM::update( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),get_object_vars($this)['id'],$param);
+    }
+
+    public function readAll($param = []){
+        $list = ORM::find( lcfirst(str_replace('Model','',explode('\\', get_class($this))[1])."s"),$param);
+        $class = get_class($this);
+        $models = [];
+        foreach($list as $value){
+            $models[] = new $class(['id' => $value['id']]);
+        }
+        return $models;
     }
 
 

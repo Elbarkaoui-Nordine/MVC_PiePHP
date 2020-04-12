@@ -12,47 +12,49 @@ class UserController extends \Core\Controller{
         $this->render('register');
     }
 
-
-    public function testAction(){
-        $this->render('test');
+    public function allAction(){
+        $model = new \Model\UserModel([]);        
+        $this->render('all',['users' => $model->readAll()]);
     }
-    public function showAction($id)
+
+
+    public function showAction($id = '')
     {
-        $model = new \Model\UserModel(['id' => $id]);
-        echo '<pre>';
-        print_r($model);
-        echo '</pre>';
-    }
-    public function snkAction(){
-        $model = new \Model\UserModel(['id' => '1']);
-        echo '<pre>';
-        print_r($model);
-        echo '</pre>';
-    }
-
-    public function readAllAction(){
-        $model = new \Model\UserModel([]);
-        $tab = $model->readAll();
-
-        $inst = [];
-        foreach( $tab as $value ){
-            $inst[] = new  \Model\UserModel($value);   
+        if($id != ''){
+            $model = new \Model\UserModel(['id' => $id]);
+            echo '<pre>';
+            print_r($model);
+            // $this->render('show',['model' => $model->articles]);
         }
-        echo '<pre>';
-        print_r($inst);
-        echo '<pre>';
-       
     }
+
+    public function deleteAction($id = null){
+
+        if($id != null){
+            $model = new \Model\UserModel(['id' => $id]);
+            $model->delete();
+            $this->render('delete',['id' => $id]);
+        }
+    }
+
     
     public function registerAction()
     {
-        if(isset($_POST['email']) && isset($_POST['password']))
+        if(isset($_POST['email']) && isset($_POST['password']) && isset($_POST['promo_id']) && isset($_POST['voiture_id']))
         {
+            $_POST['promo_id'] = (int)$_POST['promo_id'];
+            $_POST['voiture_id'] = (int)$_POST['voiture_id'];
+
             $params = $this->request->getQueryParams();
             $model = new \Model\UserModel($params);
             if(!$model->mailExist()){
-                $model->save();
-                self::$_render = 'Votre compte a ete cree';
+                if($model->save() > 0){
+
+                    self::$_render = 'Votre compte a ete cree';
+                }
+                else{
+                    self::$_render = 'un probleme est survenue';
+                }
             }
             else{
                 echo 'Cette adresse email est deja prise.';
