@@ -21,7 +21,7 @@ class TemplateEngine{
         $view = preg_replace(['/@isset\((\s*.*\s*)\)/','/@endisset/'], ['if(isset($1)){ ','}'], $view);
 
         $view = preg_replace(['/@empty\((\s*.*\s*)\)/','/@endempty/'], ['if(empty($1)){ ','}'], $view);
-        echo '<pre>';
+
         eval($view);
     }
 
